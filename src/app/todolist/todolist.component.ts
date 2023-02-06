@@ -18,15 +18,23 @@ export class TodolistComponent implements OnInit {
   hideDoneItems: boolean = true;
   
   ngOnInit() {
-    this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    // Assign all the todo items to their respective project
+    for (let i = 0; i < this.todoServices.projects.length; i++) {
+      for (let j = 0; j < this.todoServices.projects[i].todos.length; j++) {
+        this.todoServices.projects[i].todos[j].project = this.todoServices.projects[i];
+      }
+    }
+    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 
   addTodoItem(): void {
     let newId: number = Date.now();
-    let lastIndex: number = this.todoServices.todoList.length;
-    let newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject, relativeIndex: lastIndex};
+    let newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject};
     this.todoServices.todoList.unshift(newItem);
-    this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    this.todoServices.currentOpenProject.todos.unshift(newItem);
+    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
     // Timeout is used because it makes the focus input field async. Otherwise it results in null because the element is not yet rendered on page
     setTimeout(()=>{ 
       document.getElementById(`todo-title${newId}`)?.focus();
@@ -36,7 +44,8 @@ export class TodolistComponent implements OnInit {
   // Check and uncheck items
   itemChecked(todoItem: Todo): void {
     todoItem.done = !todoItem.done;
-    this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 
   changeTitle(todoItem: Todo, changeTodoTitleEvent: Event): void {
@@ -56,7 +65,10 @@ export class TodolistComponent implements OnInit {
   deleteTodo(todoItem: Todo): void {
     let itemIndex = this.todoServices.todoList.indexOf(todoItem);
     this.todoServices.todoList.splice(itemIndex, 1);
-    this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    let projectItemIndex = this.todoServices.currentOpenProject.todos.indexOf(todoItem);
+    this.todoServices.currentOpenProject.todos.splice(projectItemIndex, 1);
+    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
+    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
   }
 
   // Todo's require a title

@@ -15,7 +15,8 @@ export class SidepanelComponent {
 
   openProject(project: Project): void {
     this.todoServices.currentOpenProject = project;
-    this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
+    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 
   addProject(): void {

@@ -10,71 +10,52 @@ import { Todo } from "src/interfaces/todo.interface";
 })
 export class TodosServices {
 
+  todoList: Todo[] = [
+    {
+      id: 1674480957366,
+      title: "Get milk",
+      done: false,
+      project: null
+    },
+    {
+      id: 1674480965640,
+      title: "Pet dog",
+      done: false,
+      project: null
+    },
+    {
+      id: 1674480973165,
+      title: "Eat grass",
+      done: false,
+      project: null
+    }
+  ];
+
   projects: Project[] = [
     {
       id: 1674480923746,
       title: "inbox",
-      todos: []
+      todos: [this.todoList[0]]
     },
     {
       id: 1674480943398,
       title: "Build to-do app",
-      todos: []
+      todos: [this.todoList[1], this.todoList[2]]
     }
   ];
 
   //set default open project to inbox
   currentOpenProject = this.projects[0];
 
-  todoList: Todo[] = [
-    {
-      id: 1674480957366,
-      title: "Get milk",
-      done: false,
-      project: this.projects[0],
-      relativeIndex: 0
-    },
-    {
-      id: 1674480965640,
-      title: "Pet dog",
-      done: false,
-      project: this.projects[0],
-      relativeIndex: 1
-    },
-    {
-      id: 1674480973165,
-      title: "Eat grass",
-      done: false,
-      project: this.projects[1],
-      relativeIndex: 2
-    }
-  ];
-
-  ngOnInit(): void {
-    for (let i = 0; i < this.projects.length; i++) {
-      for (let j = 0; j < this.todoList.length; j++) {
-        if (this.todoList[j].project === this.projects[i]) {
-          this.projects[i].todos.push(this.todoList[j]);
-        }
-      }
-    }
-  }
-
-  todoListSubject = new BehaviorSubject<Todo[]>(this.todoList);
+  // todoListSubject = new BehaviorSubject<Todo[]>(this.todoList);
 
   projectTodoSubject = new BehaviorSubject<Todo[]>(this.currentOpenProject.todos);
 
   // Observable for 'pending' todo's (not done)
-  todoListObservablePending$ = this.todoListSubject.pipe(map(todos => todos.filter(x => !x.done && x.project === this.currentOpenProject)));
+  todoListObservablePending$ = this.projectTodoSubject.pipe(map(todos => todos.filter(x => !x.done)));
 
   // Observable for 'finished' todo's (done)
-  todoListObservableDone$ = this.todoListSubject.pipe(map(todos => todos.filter(x => x.done && x.project === this.currentOpenProject)));
-
-  // Sort todo's by relativeIndex
-  sortTodoList(): void {
-    this.todoList = sortBy(this.todoList, ['relativeIndex']);
-    this.todoListSubject.next(this.todoList);
-  }
+  todoListObservableDone$ = this.projectTodoSubject.pipe(map(todos => todos.filter(x => x.done)));
 
   // Show trash icon on mouse hover for both tasks and projects
   showHideTrashIcon(item: number): void {
@@ -90,23 +71,32 @@ export class TodosServices {
     if(viaTrashIcon) {
       this.currentOpenProject = this.projects[0];
     }
-    this.todoListSubject.next(this.todoList);
+    // this.todoListSubject.next(this.todoList);
+    this.projectTodoSubject.next(this.currentOpenProject.todos);
   }
 
   public drop(event: CdkDragDrop<any[]>) {
+    // If the todo is dropped in the same project
     if (event.previousContainer === event.container) {
-      moveItemInArray(this.todoList, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.currentOpenProject.todos, event.previousIndex, event.currentIndex);
     } else {
+      // If the todo is dropped to a different project
       if (!(event.event.target instanceof HTMLElement)) return;
       let projectID = event.event.target.id;
       let project = this.projects.find(x => x.id === parseInt(projectID));
       if (project) {
+        // change todo project to new project
         let todoID = event.item.element.nativeElement.id;
         let todo = this.todoList.find(x => x.id === parseInt(todoID));
         todo ? todo.project = project : null;
+        // add todo to other project
+        project.todos.push(todo!);
+        // remove todo from previous project
+        this.currentOpenProject.todos.splice(event.previousIndex, 1);
       }
     }
-    this.todoListSubject.next(this.todoList);
+    // this.todoListSubject.next(this.todoList);
+    this.projectTodoSubject.next(this.currentOpenProject.todos);
   }
 
 }
