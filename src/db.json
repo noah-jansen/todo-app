@@ -1,0 +1,22 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "title": "Get milk",
+            "done": false,
+            "project": "inbox"
+        },
+        {
+            "id": 2,
+            "title": "Pet dog",
+            "done": false,
+            "project": "inbox"
+        },
+        {
+            "id": 3,
+            "title": "Eat grass",
+            "done": false,
+            "project": "inbox"
+        }
+    ]
+}

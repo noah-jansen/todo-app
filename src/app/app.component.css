@@ -1,0 +1,22 @@
+.drop-list-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+:host {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+
+.todo-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+.project-list-container {
+  height: 100vh;
+}

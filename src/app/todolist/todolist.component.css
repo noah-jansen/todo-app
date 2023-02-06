@@ -1,0 +1,73 @@
+:host {
+    width: 50%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+} */
+
+.drag-item-placeholder {
+    background: #F9FAFB;
+    min-height: 48px;
+    /* transition: transform 250ms cubic-bezier(0, 0, 0.2, 1); */
+}
+  
+
+textarea:focus, input:focus{
+    outline: none;
+  }
+
+#project-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    width: 100%;
+}
+
+#add-todo {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
+.done-item {
+    text-decoration: line-through;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.title-input {
+    border: 0;
+    width: calc(100% - 50px);
+}
+
+.todo-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.show-hide-done-items {
+    color: gray;
+    display: block;
+    margin-top: 25px;
+}
+
+.checkbox-and-title {
+    width: 100%;
+}

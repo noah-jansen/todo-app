@@ -1,0 +1,83 @@
+<input
+  (change)="changeProjectTitle($event)"
+  class="title-input"
+  value="{{ todoServices.currentOpenProject.title }}"
+  id="project-title"
+  (keydown.enter)="unfocusInputfield($event)"
+  (focusout)="deleteEmptyProject()"
+  placeholder="New Project"
+/>
+
+<mat-divider></mat-divider>
+
+<!-- List all the open (not done) todo's with checkbox to the left of them and trash icon to the right of them -->
+<span
+  *ngFor="let x of todoServices.todoListObservablePending$ | async"
+  (mouseover)="todoServices.showHideTrashIcon(x.id)"
+  (mouseout)="todoServices.showHideTrashIcon(x.id)"
+  class="todo-item"
+  id="{{ x.id }}"
+  cdkDrag
+  ><div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+  <div class="checkBoxAndTitle">
+    <mat-checkbox id="checkbox" (change)="itemChecked(x)"></mat-checkbox>
+    <input
+      (change)="changeTitle(x, $event)"
+      class="title-input"
+      value="{{ x.title }}"
+      attr.id="todo-title{{ x.id }}"
+      placeholder="New Todo"
+      (focusout)="deleteEmptyTodo(x)"
+      (keydown.enter)="unfocusInputfield($event)"
+    />
+  </div>
+  <button
+    mat-icon-button
+    (click)="deleteTodo(x)"
+    attr.id="delete-button{{ x.id }}"
+    class="hidden"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</span>
+
+<!-- List all the finished todo's -->
+<span
+  [ngClass]="
+    (todoServices.todoListObservableDone$ | async)?.length == 0 ? 'hidden' : ''
+  "
+  (click)="showHideDoneItems()"
+  class="show-hide-done-items"
+>
+  {{ hideDoneItems ? "Show" : "Hide" }} done items
+</span>
+<span
+  [ngClass]="hideDoneItems ? 'hidden' : ''"
+  *ngFor="let x of todoServices.todoListObservableDone$ | async"
+  class="done-item todo-item"
+  (mouseover)="todoServices.showHideTrashIcon(x.id)"
+  (mouseout)="todoServices.showHideTrashIcon(x.id)"
+>
+  <div>
+    <mat-checkbox
+      type="checkbox"
+      id="checkbox"
+      (change)="itemChecked(x)"
+      checked
+    ></mat-checkbox>
+    {{ x.title }}
+  </div>
+  <button
+    mat-icon-button
+    (click)="deleteTodo(x)"
+    attr.id="delete-button{{ x.id }}"
+    class="hidden"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</span>
+
+<!-- Button to add new todo -->
+<button mat-fab color="primary" (click)="addTodoItem()" id="add-todo">
+  <mat-icon fontIcon="add"></mat-icon>
+</button>

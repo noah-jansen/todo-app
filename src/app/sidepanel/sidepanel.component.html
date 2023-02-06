@@ -1,0 +1,33 @@
+<div id="project-list" cdkDropList (cdkDropListDropped)="moveProject($event)">
+  <span
+    class="project-item"
+    id="{{ project.id }}"
+    *ngFor="let project of todoServices.projects"
+    (click)="openProject(project)"
+    [ngClass]="project === todoServices.currentOpenProject ? 'selected' : ''"
+    (dblclick)="editTitle()"
+    (mouseover)="todoServices.showHideTrashIcon(project.id)"
+    (mouseout)="todoServices.showHideTrashIcon(project.id)"
+    cdkDrag
+  >
+    <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+    {{ project.title ? project.title : "New Project" }}
+    <button
+      mat-icon-button
+      attr.id="delete-button{{ project.id }}"
+      class="hidden"
+      (click)="todoServices.deleteProject(project, true)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </span>
+</div>
+<!-- <span *ngFor="let project of todoServices.projects" (click)="openProject(project)" [ngClass]="project === todoServices.currentOpenProject ? 'selected' : '' ">{{project.title}}</span> -->
+<button
+  mat-raised-button
+  color="accent"
+  (click)="addProject()"
+  id="add-project"
+>
+  Add project
+</button>
