@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from 'src/interfaces/todo.interface';
 import { TodosServices } from '../services/todo.services';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todolist',
@@ -20,23 +20,24 @@ export class TodolistComponent implements OnInit {
   ngOnInit() {
     // Assign all the todo items to their respective project
     for (let i = 0; i < this.todoServices.projects.length; i++) {
-      for (let j = 0; j < this.todoServices.projects[i].todos.length; j++) {
-        this.todoServices.projects[i].todos[j].project = this.todoServices.projects[i];
-      }
+      this.todoServices.todoList.filter(x => x.project === this.todoServices.projects[i]).forEach(x => this.todoServices.projects[i].todos.push(x));
     }
-    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 
   addTodoItem(): void {
+    // creates unique id (milliseconds since 1970)
     let newId: number = Date.now();
+    // creates new todo item
     let newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject};
+    // adds new todo item to todo list
     this.todoServices.todoList.unshift(newItem);
+    // adds new todo item to current project
     this.todoServices.currentOpenProject.todos.unshift(newItem);
-    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
     // Timeout is used because it makes the focus input field async. Otherwise it results in null because the element is not yet rendered on page
     setTimeout(()=>{ 
+      // focus input field to edit title
       document.getElementById(`todo-title${newId}`)?.focus();
     },0);
   }
@@ -44,7 +45,6 @@ export class TodolistComponent implements OnInit {
   // Check and uncheck items
   itemChecked(todoItem: Todo): void {
     todoItem.done = !todoItem.done;
-    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 
@@ -63,12 +63,13 @@ export class TodolistComponent implements OnInit {
   }
 
   deleteTodo(todoItem: Todo): void {
+    // Remove todo item from todo list
     let itemIndex = this.todoServices.todoList.indexOf(todoItem);
     this.todoServices.todoList.splice(itemIndex, 1);
+    // Remove todo item from current project
     let projectItemIndex = this.todoServices.currentOpenProject.todos.indexOf(todoItem);
     this.todoServices.currentOpenProject.todos.splice(projectItemIndex, 1);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
-    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
   }
 
   // Todo's require a title

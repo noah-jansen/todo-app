@@ -1,7 +1,7 @@
-import { Component, Input, Output} from '@angular/core';
+import { Component } from '@angular/core';
 import { Project } from 'src/interfaces/project.interface';
 import { TodosServices } from '../services/todo.services';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sidepanel',
@@ -15,7 +15,6 @@ export class SidepanelComponent {
 
   openProject(project: Project): void {
     this.todoServices.currentOpenProject = project;
-    // this.todoServices.todoListSubject.next(this.todoServices.todoList);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }
 

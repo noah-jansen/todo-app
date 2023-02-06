@@ -47,8 +47,6 @@ export class TodosServices {
   //set default open project to inbox
   currentOpenProject = this.projects[0];
 
-  // todoListSubject = new BehaviorSubject<Todo[]>(this.todoList);
-
   projectTodoSubject = new BehaviorSubject<Todo[]>(this.currentOpenProject.todos);
 
   // Observable for 'pending' todo's (not done)
@@ -68,14 +66,13 @@ export class TodosServices {
     // Delete the actual project
     let projectIndex = this.projects.indexOf(projectItem);
     this.projects.splice(projectIndex, 1);
-    if(viaTrashIcon) {
+    if(viaTrashIcon && projectItem === this.currentOpenProject) {
       this.currentOpenProject = this.projects[0];
     }
-    // this.todoListSubject.next(this.todoList);
     this.projectTodoSubject.next(this.currentOpenProject.todos);
   }
 
-  public drop(event: CdkDragDrop<any[]>) {
+  public drop(event: CdkDragDrop<any[]>): void {
     // If the todo is dropped in the same project
     if (event.previousContainer === event.container) {
       moveItemInArray(this.currentOpenProject.todos, event.previousIndex, event.currentIndex);
