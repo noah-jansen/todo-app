@@ -27,9 +27,9 @@ export class TodolistComponent implements OnInit {
 
   addTodoItem(): void {
     // creates unique id (milliseconds since 1970)
-    let newId: number = Date.now();
+    const newId: number = Date.now();
     // creates new todo item
-    let newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject};
+    const newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject};
     // adds new todo item to todo list
     this.todoServices.todoList.unshift(newItem);
     // adds new todo item to current project
@@ -64,10 +64,10 @@ export class TodolistComponent implements OnInit {
 
   deleteTodo(todoItem: Todo): void {
     // Remove todo item from todo list
-    let itemIndex = this.todoServices.todoList.indexOf(todoItem);
+    const itemIndex = this.todoServices.todoList.indexOf(todoItem);
     this.todoServices.todoList.splice(itemIndex, 1);
     // Remove todo item from current project
-    let projectItemIndex = this.todoServices.currentOpenProject.todos.indexOf(todoItem);
+    const projectItemIndex = this.todoServices.currentOpenProject.todos.indexOf(todoItem);
     this.todoServices.currentOpenProject.todos.splice(projectItemIndex, 1);
     this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
   }

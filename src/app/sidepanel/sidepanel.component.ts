@@ -19,7 +19,7 @@ export class SidepanelComponent {
   }
 
   addProject(): void {
-    let newProject = {
+    const newProject = {
       id: Date.now(),
       title: "",
       todos: []

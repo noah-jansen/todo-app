@@ -64,7 +64,7 @@ export class TodosServices {
     // Delete all the associated todo's
     this.todoList = this.todoList.filter(x => x.project !== projectItem);
     // Delete the actual project
-    let projectIndex = this.projects.indexOf(projectItem);
+    const projectIndex = this.projects.indexOf(projectItem);
     this.projects.splice(projectIndex, 1);
     if(viaTrashIcon && projectItem === this.currentOpenProject) {
       this.currentOpenProject = this.projects[0];
@@ -79,12 +79,12 @@ export class TodosServices {
     } else {
       // If the todo is dropped to a different project
       if (!(event.event.target instanceof HTMLElement)) return;
-      let projectID = event.event.target.id;
-      let project = this.projects.find(x => x.id === parseInt(projectID));
+      const projectID = event.event.target.id;
+      const project = this.projects.find(x => x.id === parseInt(projectID));
       if (project) {
         // change todo project to new project
-        let todoID = event.item.element.nativeElement.id;
-        let todo = this.todoList.find(x => x.id === parseInt(todoID));
+        const todoID = event.item.element.nativeElement.id;
+        const todo = this.todoList.find(x => x.id === parseInt(todoID));
         todo ? todo.project = project : null;
         // add todo to other project
         project.todos.push(todo!);
