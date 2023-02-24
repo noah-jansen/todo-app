@@ -19,18 +19,16 @@
   id="{{ todo.id }}"
   cdkDrag
   ><div class="drag-item-placeholder" *cdkDragPlaceholder></div>
-  <div class="checkBoxAndTitle">
-    <mat-checkbox id="checkbox" (change)="itemChecked(todo)"></mat-checkbox>
-    <input
-      (change)="changeTitle(todo, $event)"
-      class="title-input"
-      value="{{ todo.title }}"
-      attr.id="todo-title{{ todo.id }}"
-      placeholder="New Todo"
-      (focusout)="deleteEmptyTodo(todo)"
-      (keydown.enter)="unfocusInputfield($event)"
-    />
-  </div>
+  <mat-checkbox id="checkbox" (change)="itemChecked(todo)"></mat-checkbox>
+  <input
+    (change)="changeTitle(todo, $event)"
+    class="todo-input"
+    value="{{ todo.title }}"
+    attr.id="todo-title{{ todo.id }}"
+    placeholder="New Todo"
+    (focusout)="deleteEmptyTodo(todo)"
+    (keydown.enter)="unfocusInputfield($event)"
+  />
   <button
     mat-icon-button
     (click)="deleteTodo(todo)"
