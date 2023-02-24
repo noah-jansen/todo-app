@@ -22,7 +22,7 @@ export class SidepanelComponent {
     const newProject = {
       id: Date.now(),
       title: "",
-      todos: []
+      todos: [],
     };
     this.todoServices.projects.push(newProject);
     this.openProject(newProject);

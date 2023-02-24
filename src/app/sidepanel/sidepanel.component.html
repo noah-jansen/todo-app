@@ -1,13 +1,26 @@
 <div id="project-list" cdkDropList (cdkDropListDropped)="moveProject($event)">
+  <!-- All immutable projects (not user generated or alterable) -->
   <span
     class="project-item"
     id="{{ project.id }}"
-    *ngFor="let project of todoServices.projects"
+    *ngFor="let project of todoServices.projects | slice : 0 : 1"
+    (click)="openProject(project)"
+    [ngClass]="project === todoServices.currentOpenProject ? 'selected' : ''"
+  >
+    {{ project.title }}
+  </span>
+  <mat-divider class="divider"></mat-divider>
+
+  <!-- All user generated projects -->
+  <span
+    class="project-item"
+    id="{{ project.id }}"
+    *ngFor="let project of todoServices.projects | slice : 1"
     (click)="openProject(project)"
     [ngClass]="project === todoServices.currentOpenProject ? 'selected' : ''"
     (dblclick)="editTitle()"
-    (mouseover)="todoServices.showHideTrashIcon(project.id)"
-    (mouseout)="todoServices.showHideTrashIcon(project.id)"
+    (mouseover)="todoServices.showHideTrashIcon(project)"
+    (mouseout)="todoServices.showHideTrashIcon(project)"
     cdkDrag
   >
     <div class="drag-item-placeholder" *cdkDragPlaceholder></div>

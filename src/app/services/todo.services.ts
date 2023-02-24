@@ -34,7 +34,7 @@ export class TodosServices {
   projects: Project[] = [
     {
       id: 1674480923746,
-      title: "inbox",
+      title: "Inbox",
       todos: [this.todoList[0]]
     },
     {
@@ -56,8 +56,8 @@ export class TodosServices {
   todoListObservableDone$ = this.projectTodoSubject.pipe(map(todos => todos.filter(x => x.done)));
 
   // Show trash icon on mouse hover for both tasks and projects
-  showHideTrashIcon(item: number): void {
-    document.getElementById("delete-button" + item)!.classList.toggle('hidden');
+  showHideTrashIcon(item: Project | Todo): void {
+    document.getElementById("delete-button" + item.id)!.classList.toggle('hidden');
   }
 
   deleteProject(projectItem: Project, viaTrashIcon: boolean): void {

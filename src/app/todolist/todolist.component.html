@@ -12,29 +12,29 @@
 
 <!-- List all the open (not done) todo's with checkbox to the left of them and trash icon to the right of them -->
 <span
-  *ngFor="let x of todoServices.todoListObservablePending$ | async"
-  (mouseover)="todoServices.showHideTrashIcon(x.id)"
-  (mouseout)="todoServices.showHideTrashIcon(x.id)"
+  *ngFor="let todo of todoServices.todoListObservablePending$ | async"
+  (mouseover)="todoServices.showHideTrashIcon(todo)"
+  (mouseout)="todoServices.showHideTrashIcon(todo)"
   class="todo-item"
-  id="{{ x.id }}"
+  id="{{ todo.id }}"
   cdkDrag
   ><div class="drag-item-placeholder" *cdkDragPlaceholder></div>
   <div class="checkBoxAndTitle">
-    <mat-checkbox id="checkbox" (change)="itemChecked(x)"></mat-checkbox>
+    <mat-checkbox id="checkbox" (change)="itemChecked(todo)"></mat-checkbox>
     <input
-      (change)="changeTitle(x, $event)"
+      (change)="changeTitle(todo, $event)"
       class="title-input"
-      value="{{ x.title }}"
-      attr.id="todo-title{{ x.id }}"
+      value="{{ todo.title }}"
+      attr.id="todo-title{{ todo.id }}"
       placeholder="New Todo"
-      (focusout)="deleteEmptyTodo(x)"
+      (focusout)="deleteEmptyTodo(todo)"
       (keydown.enter)="unfocusInputfield($event)"
     />
   </div>
   <button
     mat-icon-button
-    (click)="deleteTodo(x)"
-    attr.id="delete-button{{ x.id }}"
+    (click)="deleteTodo(todo)"
+    attr.id="delete-button{{ todo.id }}"
     class="hidden"
   >
     <mat-icon>delete</mat-icon>
@@ -53,24 +53,24 @@
 </span>
 <span
   [ngClass]="hideDoneItems ? 'hidden' : ''"
-  *ngFor="let x of todoServices.todoListObservableDone$ | async"
+  *ngFor="let todo of todoServices.todoListObservableDone$ | async"
   class="done-item todo-item"
-  (mouseover)="todoServices.showHideTrashIcon(x.id)"
-  (mouseout)="todoServices.showHideTrashIcon(x.id)"
+  (mouseover)="todoServices.showHideTrashIcon(todo)"
+  (mouseout)="todoServices.showHideTrashIcon(todo)"
 >
   <div>
     <mat-checkbox
       type="checkbox"
       id="checkbox"
-      (change)="itemChecked(x)"
+      (change)="itemChecked(todo)"
       checked
     ></mat-checkbox>
-    {{ x.title }}
+    {{ todo.title }}
   </div>
   <button
     mat-icon-button
-    (click)="deleteTodo(x)"
-    attr.id="delete-button{{ x.id }}"
+    (click)="deleteTodo(todo)"
+    attr.id="delete-button{{ todo.id }}"
     class="hidden"
   >
     <mat-icon>delete</mat-icon>
