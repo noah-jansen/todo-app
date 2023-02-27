@@ -1,12 +1,24 @@
-<input
-  (change)="changeProjectTitle($event)"
+<h2
+  *ngIf="
+    todoServices.currentOpenProject.id === 1674480923746;
+    else editableHeader
+  "
   class="title-input"
-  value="{{ todoServices.currentOpenProject.title }}"
-  id="project-title"
-  (keydown.enter)="unfocusInputfield($event)"
-  (focusout)="deleteEmptyProject()"
-  placeholder="New Project"
-/>
+>
+  Inbox
+</h2>
+<ng-template #editableHeader>
+  <input
+    #editableHeader
+    (change)="changeProjectTitle($event)"
+    class="title-input"
+    value="{{ todoServices.currentOpenProject.title }}"
+    id="project-title"
+    (keydown.enter)="unfocusInputfield($event)"
+    (focusout)="deleteEmptyProject()"
+    placeholder="New Project"
+  />
+</ng-template>
 
 <mat-divider></mat-divider>
 
