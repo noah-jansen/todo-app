@@ -22,34 +22,64 @@
 
 <mat-divider></mat-divider>
 
-<!-- List all the open (not done) todo's with checkbox to the left of them and trash icon to the right of them -->
-<span
+<div
   *ngFor="let todo of todoServices.todoListObservablePending$ | async"
   (mouseover)="todoServices.showHideTrashIcon(todo)"
   (mouseout)="todoServices.showHideTrashIcon(todo)"
-  class="todo-item"
+  class="todo-card"
   id="{{ todo.id }}"
   cdkDrag
-  ><div class="drag-item-placeholder" *cdkDragPlaceholder></div>
-  <mat-checkbox id="checkbox" (change)="itemChecked(todo)"></mat-checkbox>
-  <input
-    (change)="changeTitle(todo, $event)"
-    class="todo-input"
-    value="{{ todo.title }}"
-    attr.id="todo-title{{ todo.id }}"
-    placeholder="New Todo"
-    (focusout)="deleteEmptyTodo(todo)"
-    (keydown.enter)="unfocusInputfield($event)"
-  />
-  <button
-    mat-icon-button
-    (click)="deleteTodo(todo)"
-    attr.id="delete-button{{ todo.id }}"
-    class="hidden"
-  >
-    <mat-icon>delete</mat-icon>
-  </button>
-</span>
+  appExpandOnClick
+>
+  <div class="collapsed-card">
+    <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+    <mat-checkbox id="checkbox" (change)="itemChecked(todo)"></mat-checkbox>
+    <input
+      (change)="changeTitle(todo, $event)"
+      class="todo-input"
+      value="{{ todo.title }}"
+      attr.id="todo-title{{ todo.id }}"
+      placeholder="New Todo"
+      (focusout)="deleteEmptyTodo(todo)"
+      (keydown.enter)="unfocusInputfield($event)"
+    />
+    <div class="tags-collapsed">
+      <span *ngFor="let tag of todo.tags" class="tag">{{ tag }}</span>
+    </div>
+    <button
+      mat-icon-button
+      (click)="deleteTodo(todo)"
+      attr.id="delete-button{{ todo.id }}"
+      class="hidden"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <!-- Expanded card content -->
+  <div class="expanded-card">
+    <div class="tags">
+      <span *ngFor="let tag of todo.tags" class="tag">
+        {{ tag }}
+        <button
+          class="small-icon-button"
+          mat-icon-button
+          (click)="removeTag(todo, tag)"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </span>
+    </div>
+    <div>
+      <input
+        [(ngModel)]="newTag"
+        (keydown.enter)="addTag(todo, newTag); newTag = ''"
+        placeholder="Add Tag"
+        class="tag-input-section"
+      />
+    </div>
+  </div>
+</div>
 
 <!-- List all the finished todo's -->
 <span

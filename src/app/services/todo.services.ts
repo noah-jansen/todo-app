@@ -1,6 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { Injectable } from "@angular/core";
-import { sortBy } from "lodash";
 import { BehaviorSubject, map } from "rxjs";
 import { Project } from "src/interfaces/project.interface";
 import { Todo } from "src/interfaces/todo.interface";
@@ -15,19 +14,22 @@ export class TodosServices {
       id: 1674480957366,
       title: "Get milk",
       done: false,
-      project: null
+      project: null,
+      tags: ["test", "test2"]
     },
     {
       id: 1674480965640,
       title: "Pet dog",
       done: false,
-      project: null
+      project: null,
+      tags: []
     },
     {
       id: 1674480973165,
       title: "Eat grass",
       done: false,
-      project: null
+      project: null,
+      tags: []
     }
   ];
 
@@ -70,6 +72,18 @@ export class TodosServices {
       this.currentOpenProject = this.projects[0];
     }
     this.projectTodoSubject.next(this.currentOpenProject.todos);
+  }
+
+  addTodoItem(newItem: Todo): void {
+    this.todoList.unshift(newItem);
+    this.currentOpenProject.todos.unshift(newItem);
+    this.projectTodoSubject.next(this.currentOpenProject.todos);
+  }
+
+  addTag(todoItem: Todo, tag: string): void {
+    if (!todoItem.tags.includes(tag)) {
+      todoItem.tags.push(tag);
+    }
   }
 
   public drop(event: CdkDragDrop<any[]>): void {

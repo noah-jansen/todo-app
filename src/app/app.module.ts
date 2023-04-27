@@ -13,6 +13,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ExpandOnClickDirective } from './expand-on-click.directive';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -20,7 +22,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   declarations: [
     AppComponent,
     TodolistComponent,
-    SidepanelComponent
+    SidepanelComponent,
+    ExpandOnClickDirective
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatDialogModule,
     MatDividerModule,
     MatListModule,
-    DragDropModule
+    DragDropModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

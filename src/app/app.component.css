@@ -1,13 +1,18 @@
+:host {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
 .drop-list-group {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
 
-:host {
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
+.expanded-todo-container {
+    width: 100%;
+    position: relative;
   }
 
 .todo-list-container {
@@ -15,8 +20,16 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
+  overflow-y: visible;
+  height: 100%;
+}
+
+.app-todolist {
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .project-list-container {
-  height: 100vh;
+  /* height: 100vh; */
+  height: 100%;
 }

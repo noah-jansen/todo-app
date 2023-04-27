@@ -11,6 +11,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export class TodolistComponent implements OnInit {
 
+  newTag: string = '';
+
   //use todoServices in HTML
   constructor(public todoServices: TodosServices) {}
 
@@ -29,17 +31,27 @@ export class TodolistComponent implements OnInit {
     // creates unique id (milliseconds since 1970)
     const newId: number = Date.now();
     // creates new todo item
-    const newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject};
+    const newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject, tags: []};
     // adds new todo item to todo list
-    this.todoServices.todoList.unshift(newItem);
-    // adds new todo item to current project
-    this.todoServices.currentOpenProject.todos.unshift(newItem);
-    this.todoServices.projectTodoSubject.next(this.todoServices.currentOpenProject.todos);
+    this.todoServices.addTodoItem(newItem);
     // Timeout is used because it makes the focus input field async. Otherwise it results in null because the element is not yet rendered on page
     setTimeout(()=>{ 
       // focus input field to edit title
       document.getElementById(`todo-title${newId}`)?.focus();
     },0);
+  }
+
+  addTag(todo: Todo, newTag: string): void {
+    if (newTag.trim() !== '' && !todo.tags.includes(newTag.trim())) {
+      todo.tags.push(newTag.trim());
+    }
+  }
+
+  removeTag(todo: Todo, tag: string): void {
+    const tagIndex = todo.tags.indexOf(tag);
+    if (tagIndex !== -1) {
+      todo.tags.splice(tagIndex, 1);
+    }
   }
 
   // Check and uncheck items

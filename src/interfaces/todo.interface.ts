@@ -5,4 +5,5 @@ export interface Todo {
   title: string;
   done: boolean;
   project: Project | null;
+  tags: string[];
 }
