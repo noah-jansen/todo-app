@@ -15,21 +15,24 @@ export class TodosServices {
       title: "Get milk",
       done: false,
       project: null,
-      tags: ["test", "test2"]
+      tags: ["test", "test2"],
+      deadline: new Date('2023-04-27T12:30:00')
     },
     {
       id: 1674480965640,
       title: "Pet dog",
       done: false,
       project: null,
-      tags: []
+      tags: [],
+      deadline: new Date('2023-04-27T12:30:00')
     },
     {
       id: 1674480973165,
       title: "Eat grass",
       done: false,
       project: null,
-      tags: []
+      tags: [],
+      deadline: new Date('2023-04-27T12:30:00')
     }
   ];
 

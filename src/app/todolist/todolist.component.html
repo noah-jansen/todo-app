@@ -43,9 +43,12 @@
       (focusout)="deleteEmptyTodo(todo)"
       (keydown.enter)="unfocusInputfield($event)"
     />
-    <div class="tags-collapsed">
+    <div class="tags collapsed">
       <span *ngFor="let tag of todo.tags" class="tag">{{ tag }}</span>
     </div>
+    <span *ngIf="todo.deadline" class="deadline collapsed">{{
+      todo.deadline | date : "d MMMM"
+    }}</span>
     <button
       mat-icon-button
       (click)="deleteTodo(todo)"
@@ -69,13 +72,19 @@
           <mat-icon>cancel</mat-icon>
         </button>
       </span>
-    </div>
-    <div>
       <input
         [(ngModel)]="newTag"
         (keydown.enter)="addTag(todo, newTag); newTag = ''"
         placeholder="Add Tag"
         class="tag-input-section"
+      />
+    </div>
+    <div class="dates">
+      <input
+        class="deadline"
+        type="date"
+        [ngModel]="todo.deadline | date : 'yyyy-MM-dd'"
+        (ngModelChange)="todo.deadline = $event"
       />
     </div>
   </div>

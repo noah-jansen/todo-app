@@ -31,7 +31,7 @@ export class TodolistComponent implements OnInit {
     // creates unique id (milliseconds since 1970)
     const newId: number = Date.now();
     // creates new todo item
-    const newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject, tags: []};
+    const newItem: Todo = {id: newId, title: "", done: false, project: this.todoServices.currentOpenProject, tags: [], deadline: null};
     // adds new todo item to todo list
     this.todoServices.addTodoItem(newItem);
     // Timeout is used because it makes the focus input field async. Otherwise it results in null because the element is not yet rendered on page

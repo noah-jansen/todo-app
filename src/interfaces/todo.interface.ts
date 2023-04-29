@@ -6,4 +6,5 @@ export interface Todo {
   done: boolean;
   project: Project | null;
   tags: string[];
+  deadline: Date | null;
 }
