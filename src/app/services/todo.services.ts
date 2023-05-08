@@ -9,13 +9,15 @@ import { Todo } from "src/interfaces/todo.interface";
 })
 export class TodosServices {
 
+  tags: string[] = ["errands", "work"];
+
   todoList: Todo[] = [
     {
       id: 1674480957366,
       title: "Get milk",
       done: false,
       project: null,
-      tags: ["test", "test2"],
+      tags: [this.tags[0]],
       deadline: new Date('2023-04-27T12:30:00')
     },
     {
@@ -23,7 +25,7 @@ export class TodosServices {
       title: "Pet dog",
       done: false,
       project: null,
-      tags: [],
+      tags: [this.tags[1]],
       deadline: new Date('2023-04-27T12:30:00')
     },
     {
@@ -31,7 +33,7 @@ export class TodosServices {
       title: "Eat grass",
       done: false,
       project: null,
-      tags: [],
+      tags: [this.tags[1]],
       deadline: new Date('2023-04-27T12:30:00')
     }
   ];
@@ -51,6 +53,9 @@ export class TodosServices {
 
   //set default open project to inbox
   currentOpenProject = this.projects[0];
+
+  //keep track of the open (expanded) todo
+  currentOpenTodo: Todo | null = null;
 
   projectTodoSubject = new BehaviorSubject<Todo[]>(this.currentOpenProject.todos);
 

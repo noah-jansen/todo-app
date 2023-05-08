@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ExpandStateService {
-  private expandedElement: any;
+  public expandedElement: any;
 
   setExpandedElement(element: any): void {
     if (this.expandedElement && this.expandedElement !== element) {

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from 'src/interfaces/todo.interface';
 import { TodosServices } from '../services/todo.services';
+import { ExpandStateService } from '../services/expanded-state.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { FormControl } from '@angular/forms';
+import { Observable, combineLatest, distinctUntilChanged, map, startWith } from 'rxjs';
+import { FilterTagsPipe } from '../pipes/filter-tags.pipe';
 
 @Component({
   selector: 'app-todolist',
@@ -10,8 +14,6 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 })
 
 export class TodolistComponent implements OnInit {
-
-  newTag: string = '';
 
   //use todoServices in HTML
   constructor(public todoServices: TodosServices) {}
@@ -41,9 +43,23 @@ export class TodolistComponent implements OnInit {
     },0);
   }
 
-  addTag(todo: Todo, newTag: string): void {
-    if (newTag.trim() !== '' && !todo.tags.includes(newTag.trim())) {
-      todo.tags.push(newTag.trim());
+  newTag: string = '';
+
+  // for autocompleting new tags
+  myControl = new FormControl();
+
+  addTag(todo: Todo, tag: string): void {
+    // if new tag is not a global tag, add to global tags and add to todo. Otherwise, find position in array of global tags and add
+    const newTag = tag.trim();
+    if (!todo.tags.includes(newTag)){
+      if (!this.todoServices.tags.includes(newTag)) {
+        this.todoServices.tags.push(newTag);
+        let tagIndex = this.todoServices.tags.length - 1;
+        todo.tags.push(this.todoServices.tags[tagIndex]);
+      } else {
+        let tagIndex = this.todoServices.tags.indexOf(newTag);
+        todo.tags.push(this.todoServices.tags[tagIndex]);
+      }
     }
   }
 
@@ -52,6 +68,25 @@ export class TodolistComponent implements OnInit {
     if (tagIndex !== -1) {
       todo.tags.splice(tagIndex, 1);
     }
+  }
+
+  private filterTagsPipe = new FilterTagsPipe();
+
+  filteredTags(todo: Todo | null): Observable<string[]> {
+    const defaultTodo: Todo = {
+      id: Date.now(),
+      title: '',
+      done: false,
+      project: null,
+      deadline: null,
+      tags: []
+    };
+  
+    return this.myControl.valueChanges.pipe(
+      startWith(this.myControl.value),
+      distinctUntilChanged(),
+      map(value => this.filterTagsPipe.transform(this.todoServices.tags, todo || defaultTodo, value))
+    );
   }
 
   // Check and uncheck items

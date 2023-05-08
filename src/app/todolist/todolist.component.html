@@ -73,11 +73,36 @@
         </button>
       </span>
       <input
-        [(ngModel)]="newTag"
-        (keydown.enter)="addTag(todo, newTag); newTag = ''"
-        placeholder="Add Tag"
+        #tagInput
         class="tag-input-section"
+        type="text"
+        placeholder="Add tag"
+        aria-label="Number"
+        matInput
+        [formControl]="myControl"
+        [matAutocomplete]="auto"
+        [(ngModel)]="newTag"
+        (keydown.enter)="
+          addTag(todo, myControl.value);
+          myControl.reset();
+          myControl.setValue('')
+        "
+        (focus)="myControl.setValue('')"
       />
+
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        autoActiveFirstOption
+        (optionSelected)="addTag(todo, newTag); newTag = ''; myControl.reset()"
+      >
+        <mat-option
+          *ngFor="let tag of filteredTags(todo) | async"
+          [value]="tag"
+          (click)="$event.stopPropagation()"
+        >
+          {{ tag }}
+        </mat-option>
+      </mat-autocomplete>
     </div>
     <div class="dates">
       <input

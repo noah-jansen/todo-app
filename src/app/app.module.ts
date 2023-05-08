@@ -15,15 +15,17 @@ import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ExpandOnClickDirective } from './expand-on-click.directive';
 import { FormsModule } from '@angular/forms';
-
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FilterTagsPipe } from './pipes/filter-tags.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodolistComponent,
     SidepanelComponent,
-    ExpandOnClickDirective
+    ExpandOnClickDirective,
+    FilterTagsPipe
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,9 @@ import { FormsModule } from '@angular/forms';
     MatDividerModule,
     MatListModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
